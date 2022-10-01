@@ -1,8 +1,20 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:block_stake_ui/theme/constants.dart';
+import 'package:block_stake_ui/ui/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/route_manager.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor:
+          Get.isDarkMode ? darkBGColor : Colors.white, // navigation bar color
+      statusBarColor:
+          Get.isDarkMode ? darkBGColor : Colors.white, // status bar color
+      statusBarIconBrightness:
+          Get.isDarkMode ? Brightness.light : Brightness.dark));
   runApp(const MyApp());
 }
 
@@ -11,38 +23,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Block Stake',
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              '\$241,873',
-              style: TextStyle(
-                  fontFamily: 'GTWalsheimPro',
-                  fontWeight: FontWeight.w900,
-                  fontSize: 50.0),
-            ),
-          ],
-        ),
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.light,
+      initialRoute: '/home',
+      routes: {
+        '/home': (context) => Home(),
+      },
     );
   }
 }

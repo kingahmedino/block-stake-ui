@@ -1,9 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:block_stake_ui/backend/constract-call-manager.dart';
-import 'package:block_stake_ui/theme/constants.dart';
+import 'package:block_stake_ui/controllers/wallet-controller.dart';
 import 'package:block_stake_ui/wallet/connect_wallet.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   dynamic response = {'uri': '', 'sessionStatus': ''};
   late ContractCallsManager manager;
+  var controller = Get.put(WalletController());
 
   @override
   Widget build(BuildContext context) {
@@ -23,32 +25,10 @@ class _HomeState extends State<Home> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              '\$241,873',
-              style: TextStyle(
-                  fontFamily: 'GTWalsheimPro',
-                  fontWeight: FontWeight.w900,
-                  fontSize: 50.0),
-            ),
-            SizedBox(
-              child: ElevatedButton(
-                onPressed: () {
-                  manager.checkRewards();
-                  toggleMode();
-                },
-                child: Text('How'),
-              ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
             SizedBox(
               child: ElevatedButton(
                 onPressed: () async {
-                  response = await loginUsingMetamask(context);
-                  manager = ContractCallsManager(
-                      uri: response['uri'],
-                      walletConnect: response['provider']);
+                  controller.connectWallet(context);
                 },
                 child: Text('Connect wallet'),
               ),
@@ -100,6 +80,13 @@ class _HomeState extends State<Home> {
                 },
                 child: Text('Deposit'),
               ),
+            ),
+            GetX<WalletController>(
+              builder: (controller) {
+                return Text(controller.isWalletConnected
+                    ? controller.walletAddress
+                    : 'Empty');
+              },
             ),
           ],
         ),

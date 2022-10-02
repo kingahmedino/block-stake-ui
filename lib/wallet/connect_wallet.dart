@@ -19,16 +19,14 @@ var connector = WalletConnect(
   ),
 );
 
-Future<dynamic> loginUsingMetamask(BuildContext context) async {
+Future<dynamic> connect(BuildContext context) async {
   if (!connector.connected) {
     String _uri = "";
     try {
-      var session = await connector.connect(
-          chainId: 5,
-          onDisplayUri: (uri) async {
-            _uri = uri;
-            await launchUrlString(uri, mode: LaunchMode.externalApplication);
-          });
+      var session = await connector.connect(onDisplayUri: (uri) async {
+        _uri = uri;
+        await launchUrlString(uri, mode: LaunchMode.externalApplication);
+      });
       return {'uri': _uri, 'sessionStatus': session, 'provider': connector};
     } catch (error) {
       print(error);
@@ -36,6 +34,19 @@ Future<dynamic> loginUsingMetamask(BuildContext context) async {
     }
   }
   return;
+}
+
+//experimental
+disconnect() async {
+  if (connector.connected) {
+    try {
+      await connector.killSession();
+      print(connector.connected);
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
 }
 
 Future<dynamic> signMessageWithMetamask(BuildContext context, String message,

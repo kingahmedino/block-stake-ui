@@ -13,6 +13,14 @@ class ContractCallsController extends GetxController {
   final _getSummaryResponse = [].obs;
   List<dynamic> get summary => _getSummaryResponse;
 
+  final _checkRewardsResponse = [].obs;
+  String get rewards {
+    if (_checkRewardsResponse.isNotEmpty) {
+      return _checkRewardsResponse[0].toString();
+    }
+    return '';
+  }
+
   Web3Client get _ethereumClient => Web3Client(RPC_URL, Client());
   EthereumWalletConnectProvider get _provider =>
       EthereumWalletConnectProvider(connector);
@@ -37,23 +45,19 @@ class ContractCallsController extends GetxController {
         .call(contract: contract, function: checkRewardsFunction, params: [
           EthereumAddress.fromHex(_provider.connector.session.accounts[0])
         ])
-        .then((value) => {
-              //update state in controller
-            })
+        .then((value) => {_checkRewardsResponse.value = value})
         .catchError((error) {});
   }
 
   getSummary() async {
     final contract = await _loadContract();
     final getSummaryFunction = contract.function('getSummary');
-    _ethereumClient.call(
-        contract: contract,
-        function: getSummaryFunction,
-        params: []).then((value) {
-      _getSummaryResponse.value = value;
-    }).catchError((err) {
-      error.value = err.printError();
-    });
+    _ethereumClient
+        .call(contract: contract, function: getSummaryFunction, params: [])
+        .then((value) => {_getSummaryResponse.value = value})
+        .catchError((err) {
+          error.value = err.printError();
+        });
   }
 
   approve(String uri) async {

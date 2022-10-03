@@ -4,14 +4,14 @@ import 'package:get/get.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
 class WalletController extends GetxController {
-  final _connectWalletResponse = {}.obs;
+  final connectWalletResponse = {}.obs;
 
-  String get uri => _connectWalletResponse['uri'] as String;
+  String get uri => connectWalletResponse['uri'] as String;
   SessionStatus get sessionStatus =>
-      _connectWalletResponse['sessionStatus'] as SessionStatus;
+      connectWalletResponse['sessionStatus'] as SessionStatus;
 
   WalletConnect? get connector =>
-      _connectWalletResponse['provider'] as WalletConnect?;
+      connectWalletResponse['provider'] as WalletConnect?;
 
   String get walletAddress => sessionStatus.accounts[0];
 
@@ -22,7 +22,7 @@ class WalletController extends GetxController {
 
   connectWallet(BuildContext context) async {
     var response = await connect(context);
-    _connectWalletResponse.value = response;
+    connectWalletResponse.value = response;
   }
 
   //experimental

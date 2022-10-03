@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
-import 'package:block_stake_ui/backend/constract-call-manager.dart';
 import 'package:block_stake_ui/controllers/contact-calls-controller.dart';
+import 'package:block_stake_ui/controllers/home-controller.dart';
 import 'package:block_stake_ui/ui/common/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:random_avatar/random_avatar.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -14,55 +14,182 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late ContractCallsManager manager;
-  ContractCallsController contractCallsController =
-      Get.put(ContractCallsController());
+  HomeController homeController = Get.find<HomeController>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Wallet(),
-            SizedBox(
-              height: 20.0,
-            ),
-            GetX<ContractCallsController>(
-              builder: (controller) {
-                return Text(controller.summary.join(" "));
-              },
-            ),
-            SizedBox(
-              child: ElevatedButton(
-                onPressed: () {
-                  manager.claimRewards();
-                },
-                child: Text('Claim rewards'),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  randomAvatar(
+                    DateTime.now().toIso8601String(),
+                    height: 56,
+                    width: 56,
+                  ),
+                  Wallet(),
+                ],
               ),
-            ),
-            SizedBox(
-              child: ElevatedButton(
-                onPressed: () {
-                  manager.approve();
-                },
-                child: Text('Approve'),
+              SizedBox(
+                height: 10.0,
               ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            SizedBox(
-              child: ElevatedButton(
-                onPressed: () {
-                  contractCallsController.getSummary();
-                },
-                child: Text('Get Summary'),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 64.0,
+                      ),
+                      Text('Pending rewards:'),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GetX<HomeController>(
+                            builder: ((controller) {
+                              return Text(
+                                controller.rewards.isEmpty
+                                    ? '0'
+                                    : controller.formattedRewards,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline1
+                                    ?.copyWith(
+                                      fontSize: 48.0,
+                                      fontWeight: FontWeight.w900,
+                                      color: Colors.black,
+                                    ),
+                              );
+                            }),
+                          ),
+                          Text(
+                            ' BRW',
+                            style:
+                                Theme.of(context).textTheme.headline1?.copyWith(
+                                      fontSize: 48.0,
+                                      fontWeight: FontWeight.w900,
+                                      color: Colors.black,
+                                    ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Row(
+                              children: [
+                                Text('Deposit'),
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_rounded,
+                                  size: 14.0,
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          OutlinedButton(
+                            onPressed: () {},
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Claim',
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Icon(
+                                  Icons.system_update_tv_rounded,
+                                  size: 14.0,
+                                  color: Colors.black,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 28.0,
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          children: [
+                            Icon(Icons.receipt_long_rounded),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Text(
+                              'Transactions',
+                              textAlign: TextAlign.start,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5
+                                  ?.copyWith(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: 10,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              child: Container(
+                                padding: EdgeInsets.all(
+                                  15.0,
+                                ),
+                                child: Text('Hello'),
+                              ),
+                            );
+                          }),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_balance_wallet_rounded),
+              label: 'Balance'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.currency_exchange), label: 'Stake'),
+        ],
       ),
     );
   }

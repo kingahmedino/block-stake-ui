@@ -49,6 +49,27 @@ final lightTheme = ThemeData(
       ),
     ),
   ),
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: ButtonStyle(
+      backgroundColor: MaterialStateProperty.all(Colors.transparent),
+      textStyle: MaterialStateProperty.all(
+        TextStyle(fontFamily: 'GTWalsheimPro'),
+      ),
+      padding: MaterialStateProperty.all(
+        EdgeInsets.symmetric(vertical: 12.0, horizontal: 40.0),
+      ),
+      shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            20.0,
+          ),
+        ),
+      ),
+      side: MaterialStateProperty.all(
+        BorderSide(color: Colors.black),
+      ),
+    ),
+  ),
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: TextStyle(color: primaryColor),
     border: OutlineInputBorder(
@@ -88,6 +109,27 @@ final darkTheme = ThemeData(
             20.0,
           ),
         ),
+      ),
+    ),
+  ),
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: ButtonStyle(
+      backgroundColor: MaterialStateProperty.all(Colors.transparent),
+      textStyle: MaterialStateProperty.all(
+        TextStyle(fontFamily: 'GTWalsheimPro'),
+      ),
+      padding: MaterialStateProperty.all(
+        EdgeInsets.symmetric(vertical: 12.0, horizontal: 40.0),
+      ),
+      shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            20.0,
+          ),
+        ),
+      ),
+      side: MaterialStateProperty.all(
+        BorderSide(color: Colors.white),
       ),
     ),
   ),

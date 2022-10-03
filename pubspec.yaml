@@ -40,6 +40,7 @@ dependencies:
   http: ^0.13.5
   intl: ^0.17.0
   random_avatar: ^0.0.7
+  beamer: ^1.5.3
 
 dev_dependencies:
   flutter_test:

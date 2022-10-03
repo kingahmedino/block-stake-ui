@@ -5,7 +5,7 @@ import 'package:block_stake_ui/controllers/utils.dart';
 import 'package:block_stake_ui/controllers/wallet-controller.dart';
 import 'package:get/get.dart';
 
-class HomeController extends GetxController {
+class BalancesController extends GetxController {
   final ContractCallsController contractCallsController =
       Get.find<ContractCallsController>();
   final WalletController walletController = Get.find<WalletController>();

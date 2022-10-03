@@ -1,25 +1,16 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-import 'package:block_stake_ui/controllers/contact-calls-controller.dart';
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable
 import 'package:block_stake_ui/controllers/home-controller.dart';
+import 'package:block_stake_ui/controllers/wallet-controller.dart';
 import 'package:block_stake_ui/ui/common/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:random_avatar/random_avatar.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class BalancesPage extends StatelessWidget {
+  BalancesPage({Key? key}) : super(key: key);
 
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  HomeController homeController = Get.find<HomeController>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  BalancesController balancesController = Get.find<BalancesController>();
+  WalletController walletController = Get.find<WalletController>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +23,16 @@ class _HomeState extends State<Home> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  randomAvatar(
-                    DateTime.now().toIso8601String(),
-                    height: 56,
-                    width: 56,
+                  GetX<WalletController>(
+                    builder: ((controller) {
+                      return randomAvatar(
+                        controller.isWalletConnected
+                            ? controller.walletAddress
+                            : '0',
+                        height: 56,
+                        width: 56,
+                      );
+                    }),
                   ),
                   Wallet(),
                 ],
@@ -57,7 +54,7 @@ class _HomeState extends State<Home> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          GetX<HomeController>(
+                          GetX<BalancesController>(
                             builder: ((controller) {
                               return Text(
                                 controller.rewards.isEmpty
@@ -179,17 +176,6 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_balance_wallet_rounded),
-              label: 'Balance'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.currency_exchange), label: 'Stake'),
-        ],
       ),
     );
   }

@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:beamer/beamer.dart';
 import 'package:block_stake_ui/controllers/contact-calls-controller.dart';
 import 'package:block_stake_ui/controllers/home-controller.dart';
 import 'package:block_stake_ui/controllers/wallet-controller.dart';
 import 'package:block_stake_ui/theme/constants.dart';
-import 'package:block_stake_ui/ui/home.dart';
+import 'package:block_stake_ui/ui/routing/scaffold_with_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -18,28 +19,38 @@ void main() {
           Get.isDarkMode ? darkBGColor : Colors.white, // status bar color
       statusBarIconBrightness:
           Get.isDarkMode ? Brightness.light : Brightness.dark));
-  runApp(const MyApp());
+  runApp(MyApp());
   //init controllers
   Get.put(WalletController());
   Get.put(ContractCallsController());
-  Get.put(HomeController());
+  Get.put(BalancesController());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  final routerDelegate = BeamerDelegate(
+    initialPath: '/',
+    locationBuilder: RoutesLocationBuilder(
+      routes: {
+        '*': (context, state, data) => const ScaffoldWithBottomNavBar(),
+      },
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return GetMaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Block Stake',
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.light,
-      initialRoute: '/home',
-      routes: {
-        '/home': (context) => Home(),
-      },
+      routerDelegate: routerDelegate,
+      routeInformationParser: BeamerParser(),
+      backButtonDispatcher: BeamerBackButtonDispatcher(
+        delegate: routerDelegate,
+      ),
     );
   }
 }

@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable
-import 'package:block_stake_ui/controllers/home-controller.dart';
+import 'package:block_stake_ui/controllers/balances-controller.dart';
 import 'package:block_stake_ui/controllers/wallet-controller.dart';
 import 'package:block_stake_ui/ui/common/wallet.dart';
 import 'package:flutter/material.dart';

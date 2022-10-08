@@ -2,7 +2,8 @@
 
 import 'package:beamer/beamer.dart';
 import 'package:block_stake_ui/controllers/contact-calls-controller.dart';
-import 'package:block_stake_ui/controllers/home-controller.dart';
+import 'package:block_stake_ui/controllers/balances-controller.dart';
+import 'package:block_stake_ui/controllers/stake-info-controller.dart';
 import 'package:block_stake_ui/controllers/wallet-controller.dart';
 import 'package:block_stake_ui/theme/constants.dart';
 import 'package:block_stake_ui/ui/routing/scaffold_with_bottom_bar.dart';
@@ -15,6 +16,8 @@ void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor:
           Get.isDarkMode ? darkBGColor : Colors.white, // navigation bar color
+      systemNavigationBarIconBrightness:
+          Get.isDarkMode ? Brightness.light : Brightness.dark,
       statusBarColor:
           Get.isDarkMode ? darkBGColor : Colors.white, // status bar color
       statusBarIconBrightness:
@@ -24,6 +27,7 @@ void main() {
   Get.put(WalletController());
   Get.put(ContractCallsController());
   Get.put(BalancesController());
+  Get.put(StakeInfoController());
 }
 
 class MyApp extends StatelessWidget {

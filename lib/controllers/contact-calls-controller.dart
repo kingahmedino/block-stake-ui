@@ -21,6 +21,9 @@ class ContractCallsController extends GetxController {
     return '';
   }
 
+  final _getStakerResponse = [].obs;
+  List<dynamic> get stakerDetails => _getStakerResponse;
+
   Web3Client get _ethereumClient => Web3Client(RPC_URL, Client());
   EthereumWalletConnectProvider get _provider =>
       EthereumWalletConnectProvider(connector);
@@ -58,6 +61,17 @@ class ContractCallsController extends GetxController {
         .catchError((err) {
           error.value = err.printError();
         });
+  }
+
+  getStaker() async {
+    final contract = await _loadContract();
+    final getStakerFunction = contract.function('stakers');
+    _ethereumClient
+        .call(contract: contract, function: getStakerFunction, params: [
+          EthereumAddress.fromHex(_provider.connector.session.accounts[0])
+        ])
+        .then((value) => {_getStakerResponse.value = value})
+        .catchError((error) {});
   }
 
   approve(String uri) async {

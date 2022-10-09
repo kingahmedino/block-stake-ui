@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:block_stake_ui/backend/constants.dart';
 import 'package:block_stake_ui/wallet/connect_wallet.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +25,15 @@ class ContractCallsController extends GetxController {
 
   final _getStakerResponse = [].obs;
   List<dynamic> get stakerDetails => _getStakerResponse;
+
+  @override
+  void onInit() {
+    super.onInit();
+    Timer.periodic(const Duration(minutes: 5), (Timer t) {
+      checkRewards();
+      getStaker();
+    });
+  }
 
   Web3Client get _ethereumClient => Web3Client(RPC_URL, Client());
   EthereumWalletConnectProvider get _provider =>
@@ -106,7 +117,7 @@ class ContractCallsController extends GetxController {
         .catchError((error) {});
   }
 
-  deposit(String uri) async {
+  deposit(String uri, double amount) async {
     //load contract
     final contract = await _loadContract();
     final depositFunction = contract.function('deposit');
@@ -120,7 +131,7 @@ class ContractCallsController extends GetxController {
             contract: contract,
             function: depositFunction,
             parameters: [
-              EtherAmount.fromUnitAndValue(EtherUnit.ether, 1).getInWei
+              EtherAmount.fromUnitAndValue(EtherUnit.ether, amount).getInWei
             ],
             from: EthereumAddress.fromHex(
               _provider.connector.session.accounts[0],

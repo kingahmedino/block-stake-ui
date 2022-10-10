@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable
+import 'package:beamer/beamer.dart';
 import 'package:block_stake_ui/controllers/balances-controller.dart';
 import 'package:block_stake_ui/controllers/wallet-controller.dart';
 import 'package:block_stake_ui/ui/common/wallet.dart';
@@ -89,7 +90,10 @@ class BalancesPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Beamer.of(context)
+                                  .beamToNamed('/balances/deposit');
+                            },
                             child: Row(
                               children: [
                                 Text('Deposit'),

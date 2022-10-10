@@ -3,6 +3,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:block_stake_ui/controllers/contact-calls-controller.dart';
 import 'package:block_stake_ui/controllers/balances-controller.dart';
+import 'package:block_stake_ui/controllers/deposit-controller.dart';
 import 'package:block_stake_ui/controllers/stake-info-controller.dart';
 import 'package:block_stake_ui/controllers/wallet-controller.dart';
 import 'package:block_stake_ui/theme/constants.dart';
@@ -28,6 +29,7 @@ void main() {
   Get.put(ContractCallsController());
   Get.put(BalancesController());
   Get.put(StakeInfoController());
+  Get.put(DepositController());
 }
 
 class MyApp extends StatelessWidget {

@@ -29,9 +29,11 @@ class ContractCallsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    //get user rewards, staker info and staking summary every 5 minutes.
     Timer.periodic(const Duration(minutes: 5), (Timer t) {
       checkRewards();
       getStaker();
+      getSummary();
     });
   }
 
@@ -117,7 +119,7 @@ class ContractCallsController extends GetxController {
         .catchError((error) {});
   }
 
-  deposit(String uri, double amount) async {
+  deposit(String uri, int amount) async {
     //load contract
     final contract = await _loadContract();
     final depositFunction = contract.function('deposit');

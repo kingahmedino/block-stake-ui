@@ -2,7 +2,9 @@
 import 'package:beamer/beamer.dart';
 import 'package:block_stake_ui/controllers/balances-controller.dart';
 import 'package:block_stake_ui/controllers/wallet-controller.dart';
+import 'package:block_stake_ui/models/Transaction.dart';
 import 'package:block_stake_ui/ui/common/wallet.dart';
+import 'package:block_stake_ui/wallet/wallet_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:random_avatar/random_avatar.dart';
@@ -159,20 +161,85 @@ class BalancesPage extends StatelessWidget {
                       SizedBox(
                         height: 15.0,
                       ),
-                      ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: 10,
-                          itemBuilder: (context, index) {
-                            return Card(
-                              child: Container(
-                                padding: EdgeInsets.all(
-                                  15.0,
-                                ),
-                                child: Text('Hello'),
-                              ),
+                      GetX<BalancesController>(
+                        builder: (controller) {
+                          if (controller.getTransactions.isEmpty) {
+                            return Center(
+                              heightFactor: 15.0,
+                              child: Text('No transaction'),
                             );
-                          }),
+                          }
+                          return ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: controller.getTransactions.length,
+                            itemBuilder: (context, index) {
+                              Transaction transaction =
+                                  controller.getTransactions[index];
+                              return Card(
+                                child: Container(
+                                  padding: EdgeInsets.all(
+                                    15.0,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            transaction.type.name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline4
+                                                ?.copyWith(
+                                                  color: transaction.color(),
+                                                  fontSize: 16.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Text(
+                                            truncateString(
+                                                transaction.stakerAdress,
+                                                10,
+                                                4),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            transaction.amount,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline4
+                                                ?.copyWith(
+                                                  color: Colors.black,
+                                                  fontSize: 16.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                          ),
+                                          Text(transaction.block.toString()),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      )
                     ],
                   ),
                 ),

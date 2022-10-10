@@ -166,4 +166,18 @@ class ContractCallsController extends GetxController {
             })
         .catchError((error) {});
   }
+
+  subscribeToEvent(String eventName,
+      Function(List<dynamic> decodedEvent) eventCallback) async {
+    final contract = await _loadContract();
+    final Event = contract.event(eventName);
+    final subscription = _ethereumClient
+        .events(FilterOptions.events(contract: contract, event: Event))
+        .take(5)
+        .listen((event) {
+      final decoded = Event.decodeResults(event.topics!, event.data!);
+
+      eventCallback(decoded);
+    });
+  }
 }

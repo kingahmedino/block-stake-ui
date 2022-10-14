@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Transaction {
   String stakerAdress;
   String amount;
-  int block;
+  String block;
   TransactionType type;
 
   Transaction(this.stakerAdress, this.amount, this.block, this.type);

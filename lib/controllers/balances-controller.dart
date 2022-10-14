@@ -28,10 +28,10 @@ class BalancesController extends GetxController {
         .listen((event) {
       //do everything need after wallet is connected
       getRewards();
-    });
 
-    //subscribe to event
-    subscribeToAllContractEvents();
+      //subscribe to event
+      subscribeToAllContractEvents();
+    });
   }
 
   getRewards() async {
@@ -44,11 +44,12 @@ class BalancesController extends GetxController {
     if (walletController.isWalletConnected) {
       //subscribe to deposit event
       await contractCallsController.subscribeToEvent("Deposit", (decodedEvent) {
+        print(decodedEvent);
         _transactions.add(
           Transaction(
-              decodedEvent[0],
+              decodedEvent[0].toString(),
               "${getValueFromWeiToHumanReadable(decodedEvent[1])} BST",
-              decodedEvent[2],
+              decodedEvent[2].toString(),
               TransactionType.Deposit),
         );
       });
@@ -57,9 +58,9 @@ class BalancesController extends GetxController {
           (decodedEvent) {
         _transactions.add(
           Transaction(
-              decodedEvent[0],
+              decodedEvent[0].toString(),
               "${getValueFromWeiToHumanReadable(decodedEvent[1])} BRW",
-              decodedEvent[2],
+              decodedEvent[2].toString(),
               TransactionType.ClaimRewards),
         );
       });
@@ -68,9 +69,9 @@ class BalancesController extends GetxController {
           (decodedEvent) {
         _transactions.add(
           Transaction(
-              decodedEvent[0],
+              decodedEvent[0].toString(),
               "${getValueFromWeiToHumanReadable(decodedEvent[1])} BST",
-              decodedEvent[2],
+              decodedEvent[2].toString(),
               TransactionType.Withdrawal),
         );
       });

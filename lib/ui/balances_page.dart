@@ -113,7 +113,9 @@ class BalancesPage extends StatelessWidget {
                             width: 10.0,
                           ),
                           OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Beamer.of(context).beamToNamed('/balances/claim');
+                            },
                             child: Row(
                               children: [
                                 Text(

@@ -146,10 +146,12 @@ class ContractCallsController extends GetxController {
         .catchError((error) {});
   }
 
-  claimRewards() async {
+  claimRewards(String uri) async {
     //load contract
     final contract = await _loadContract();
     final claimRewardsFunction = contract.function('claimRewards');
+    //launch metamask
+    launchUrlString(uri, mode: LaunchMode.externalApplication);
     //send transaction
     _ethereumClient
         .sendTransaction(

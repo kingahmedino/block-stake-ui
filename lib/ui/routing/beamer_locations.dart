@@ -2,6 +2,7 @@
 
 import 'package:beamer/beamer.dart';
 import 'package:block_stake_ui/ui/balances_page.dart';
+import 'package:block_stake_ui/ui/claim-page.dart';
 import 'package:block_stake_ui/ui/deposit_page.dart';
 import 'package:block_stake_ui/ui/staking-page.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +19,17 @@ class ALocation extends BeamLocation<BeamState> {
             title: 'Balances',
             type: BeamPageType.noTransition,
             child: BalancesPage()),
-        if (state.uri.pathSegments.length == 2)
+        if (state.uri.pathSegments.contains("deposit"))
           BeamPage(
             key: ValueKey('/balances/deposit'),
             title: 'Deposit',
             child: DepositPage(),
+          ),
+        if (state.uri.pathSegments.contains("claim"))
+          BeamPage(
+            key: ValueKey('/balances/claim'),
+            title: 'Claim',
+            child: ClaimPage(),
           ),
       ];
 }

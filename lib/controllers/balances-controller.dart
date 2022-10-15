@@ -40,11 +40,16 @@ class BalancesController extends GetxController {
     }
   }
 
+  claimRewards() async {
+    if (walletController.isWalletConnected) {
+      await contractCallsController.claimRewards(walletController.uri);
+    }
+  }
+
   subscribeToAllContractEvents() async {
     if (walletController.isWalletConnected) {
       //subscribe to deposit event
       await contractCallsController.subscribeToEvent("Deposit", (decodedEvent) {
-        print(decodedEvent);
         _transactions.add(
           Transaction(
               decodedEvent[0].toString(),
